@@ -19,7 +19,7 @@ class ViewController: UITableViewController {
     let url = URL(string: urlString)
 
     let session = URLSession.shared
-    let dataTask: Void = session.dataTask(with: url!) { [weak self] (data, response, error) in
+      let dataTask: Void = session.dataTask(with: url!) { [weak self] (data, response, error) in
       if error == nil, let data = data {
         // Ошибка error company nil? в одной cell красный бэк
         if let company: Company = self?.parse(json: data) {
