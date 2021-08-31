@@ -7,21 +7,26 @@
 
 import UIKit
 
+// tomorrow work
+enum TableViewError: Error {
+  case error(Error)
+  case parseError
+}
+
 class ViewController: UITableViewController {
-  var employees = [Employee]()
   var filteredEmployees = [Employee]()
   var isFailed = false
+  private var error: Error?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
+    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c_"
     let url = URL(string: urlString)
 
     let session = URLSession.shared
-      let dataTask: Void = session.dataTask(with: url!) { [weak self] (data, response, error) in
+    session.dataTask(with: url!) { [weak self] (data, response, error) in
       if error == nil, let data = data {
-        // Ошибка error company nil? в одной cell красный бэк
         if let company: Company = self?.parse(json: data) {
           self?.filteredEmployees = company.company.employees
           DispatchQueue.main.async {
@@ -64,20 +69,19 @@ class ViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-    
     if isFailed {
-      cell.textLabel?.text = "List is empty"
-      cell.detailTextLabel?.text = "Failed to load list."
-      cell.backgroundColor = .red
+      let cell: ErrorCell = tableView.dequeueReusableCell(indexPath: indexPath)
+      return cell
+    } else {
+      let cell: EmployeeCell = tableView.dequeueReusableCell(indexPath: indexPath)
+      let employee = filteredEmployees[indexPath.row]
+      cell.backgroundColor = .white
+      cell.nameLabel.text = employee.name
+      cell.telephoneLabel.text = "Tel: \(employee.phone_number)"
+      cell.firstSkillLabel.text = employee.skills.first ?? ""
+      cell.secondSkillLabel.text = employee.skills[employee.skills.index(0, offsetBy: 1)]
       return cell
     }
-    
-    let employee = filteredEmployees[indexPath.row]
-    cell.backgroundColor = .white
-    cell.textLabel?.text = employee.name + " phone: " + String(employee.phone_number)
-    cell.detailTextLabel?.text = "Skills: \(employee.skills)"
-    return cell
   }
 }
 
