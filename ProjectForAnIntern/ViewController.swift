@@ -16,6 +16,7 @@ enum TableViewError: Error {
 class ViewController: UITableViewController {
   var filteredEmployees = [Employee]()
   var isFailed = false
+  
   private var error: Error?
 
   override func viewDidLoad() {
