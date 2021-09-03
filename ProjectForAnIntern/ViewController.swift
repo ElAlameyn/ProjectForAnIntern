@@ -7,71 +7,42 @@
 
 import UIKit
 
-// tomorrow work
-enum TableViewError: Error {
-  case error(Error)
-  case parseError
-}
-
 class ViewController: UITableViewController {
-  var filteredEmployees = [Employee]()
-  var isFailed = false
-  
-  private var error: Error?
+  private var filteredEmployees = [Employee]()
+  private var client = Client()
+
+  private var tableViewError: Error?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c_"
-    let url = URL(string: urlString)
 
-    let session = URLSession.shared
-    session.dataTask(with: url!) { [weak self] (data, response, error) in
-      if error == nil, let data = data {
-        if let company: Company = self?.parse(json: data) {
-          self?.filteredEmployees = company.company.employees
-          DispatchQueue.main.async {
-            self?.tableView.reloadData()
-          }
-        } else {
-          self?.isFailed = true
-          DispatchQueue.main.async {
-            self?.tableView.reloadData()
-          }
-        }
-      } else {
-        self?.isFailed = true
-        DispatchQueue.main.async {
-          self?.tableView.reloadData()
-        }
+    client.fetchEmployers(completionHandler: { [weak self] answer in
+      switch answer {
+      case .success(let employers):
+        self?.filteredEmployees = employers
+      case .failure(let error):
+        self?.tableViewError = TableViewError.error(error)
       }
-    }.resume()
-  }
-  
-  func showError() {
-    let ac = UIAlertController(title: "Loading Error", message: "There was a problem loading a feed.", preferredStyle: .alert)
-    ac.addAction(UIAlertAction(title: "OK", style: .default))
-    present(ac, animated: true)
+      DispatchQueue.main.async {
+        self?.tableView.reloadData()
+      }
+    })
   }
 
-  private func parse<T: Decodable>(json: Data) -> T? {
-    let decoder = JSONDecoder()
-    if let parsedStruct = try? decoder.decode(T.self, from: json) {
-      return parsedStruct
-    }
-    return nil
-  }
-  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if isFailed && filteredEmployees.isEmpty {
+    
+    if tableViewError != nil && filteredEmployees.isEmpty {
      return 1
     }
+    
     return filteredEmployees.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if isFailed {
+    if tableViewError != nil {
       let cell: ErrorCell = tableView.dequeueReusableCell(indexPath: indexPath)
+      cell.errorLabel.text = tableViewError?.localizedDescription
       return cell
     } else {
       let cell: EmployeeCell = tableView.dequeueReusableCell(indexPath: indexPath)
