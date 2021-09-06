@@ -13,14 +13,15 @@ enum TableViewError: Error {
 }
 
 struct Client {
+  
   enum Const {
     static let baseURL = "https://run.mocky.io"
   }
   
   func fetchCompany(completionHandler: @escaping (Result<Company, Error>) -> Void) {
-    let url = URL(string: Const.baseURL + "/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c")
+    guard let url = URL(string: Const.baseURL + "/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c") else { return }
     let session = URLSession.shared
-    session.dataTask(with: url!) {(data, response, error) in
+    session.dataTask(with: url) {(data, response, error) in
       if let error = error {
         completionHandler(.failure(error))
       } else {

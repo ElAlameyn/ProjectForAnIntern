@@ -10,12 +10,18 @@ import UIKit
 class ViewController: UITableViewController {
   private var filteredEmployees = [Employee]()
   private var client = Client()
+  private var storageManager = StorageManager()
 
   private var tableViewError: Error?
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
+    do {
+      filteredEmployees = try storageManager.load()
+    } catch {
+      print(error.localizedDescription)
+    }
 
     client.fetchEmployers(completionHandler: { [weak self] answer in
       switch answer {
@@ -24,10 +30,19 @@ class ViewController: UITableViewController {
       case .failure(let error):
         self?.tableViewError = TableViewError.error(error)
       }
+
       DispatchQueue.main.async {
-        self?.tableView.reloadData()
+       self?.tableView.reloadData()
+        do {
+          try self?.storageManager.save(employers: self?.filteredEmployees ?? []) 
+        } catch {
+          self?.tableViewError = error
+        }
       }
     })
+    
+    
+    
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,12 +61,7 @@ class ViewController: UITableViewController {
       return cell
     } else {
       let cell: EmployeeCell = tableView.dequeueReusableCell(indexPath: indexPath)
-      let employee = filteredEmployees[indexPath.row]
-      cell.backgroundColor = .white
-      cell.nameLabel.text = employee.name
-      cell.telephoneLabel.text = "Tel: \(employee.phone_number)"
-      cell.firstSkillLabel.text = employee.skills.first ?? ""
-      cell.secondSkillLabel.text = employee.skills[employee.skills.index(0, offsetBy: 1)]
+      cell.fill(employer: filteredEmployees[indexPath.row])
       return cell
     }
   }
