@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  ProjectForAnIntern
 //
-//  Created by Артем Калинкин on 30.08.2021.
+//  Created by Artiom Kalinkin on 30.08.2021.
 //
 
 import UIKit

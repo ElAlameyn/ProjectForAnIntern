@@ -2,7 +2,7 @@
 //  Client.swift
 //  ProjectForAnIntern
 //
-//  Created by Артем Калинкин on 01.09.2021.
+//  Created by Artiom Kalinkin on 01.09.2021.
 //
 
 import Foundation
@@ -35,7 +35,7 @@ struct Client {
     }.resume()
   }
   
-  func fetchEmployers(completionHandler: @escaping (Result<[Employee], Error>) -> Void) {
+  func fetchEmployees(completionHandler: @escaping (Result<[Employee], Error>) -> Void) {
     fetchCompany(completionHandler: { result in
       completionHandler(result.map({ company in
         company.company.employees
