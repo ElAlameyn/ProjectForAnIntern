@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qBv-CS-xDQ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -80,8 +81,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XF-dH-Soo">
-                                            <rect key="frame" x="148" y="30" width="118" height="20.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XF-dH-Soo">
+                                            <rect key="frame" x="20" y="11" width="374" height="58"/>
                                             <color key="tintColor" systemColor="linkColor"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" systemColor="systemGray6Color"/>
@@ -89,8 +90,10 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="0XF-dH-Soo" firstAttribute="centerX" secondItem="PNV-sP-BAM" secondAttribute="centerX" id="2Wl-hD-gyg"/>
-                                        <constraint firstItem="0XF-dH-Soo" firstAttribute="centerY" secondItem="PNV-sP-BAM" secondAttribute="centerY" id="OLZ-rZ-4al"/>
+                                        <constraint firstItem="0XF-dH-Soo" firstAttribute="top" secondItem="PNV-sP-BAM" secondAttribute="topMargin" id="DLD-hA-nWa"/>
+                                        <constraint firstItem="0XF-dH-Soo" firstAttribute="leading" secondItem="PNV-sP-BAM" secondAttribute="leadingMargin" id="RfM-lz-Xa9"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="0XF-dH-Soo" secondAttribute="trailing" id="dcv-f2-OA0"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="0XF-dH-Soo" secondAttribute="bottom" id="ncx-vc-m3g"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>

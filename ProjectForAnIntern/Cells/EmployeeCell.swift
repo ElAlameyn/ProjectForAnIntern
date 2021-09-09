@@ -15,7 +15,6 @@ class EmployeeCell: UITableViewCell {
   func fill(employer: Employee) {
     nameLabel.text = employer.name
     subTitleLabel.text = "Tel: \(employer.phoneNumber)"
-//    detailLabel.text = employer.skills.joined(separator: "\n")
     detailLabel.text = employer.skills.map({$0.rawValue}).joined(separator: "\n")
   }
 }

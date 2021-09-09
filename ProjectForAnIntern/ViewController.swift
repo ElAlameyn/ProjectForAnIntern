@@ -25,6 +25,7 @@ class ViewController: UITableViewController {
         let sortedEmployees = employees.sorted(by: {$0.name < $1.name})
         self?.employees = sortedEmployees
         self?.storageManager.saveEmployees(employees: sortedEmployees)
+        self?.tableViewError = nil
       case .failure(let error):
         self?.tableViewError = TableViewError.error(error)
       }
@@ -36,14 +37,15 @@ class ViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-    if tableViewError != nil && employees.isEmpty {
+
+    if tableViewError != nil {
       return 1
     }
     
     return employees.count
   }
-  
+
+
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableViewError != nil {
       let cell: ErrorCell = tableView.dequeueReusableCell(indexPath: indexPath)
